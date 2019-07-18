@@ -1,0 +1,12 @@
+rootProject.name = 'acceptance-testing-demo'
+
+include 'drivers-discovery-service'
+include 'drivers-discovery-service-model'
+include 'customer-rating-service'
+include 'customer-rating-service-model'
+include 'trip-pricing-service'
+include 'trip-pricing-service-model'
+include 'driver-preference-service'
+include 'driver-preference-service-model'
+include 'taxi-offer-service'
+include 'taxi-offer-service-model'
