@@ -1,0 +1,32 @@
+{
+    "driverPreferences": {
+        "driver_1_ID": {
+            "minimumCustomerRating": 8,
+            "minimumTripPrice": {
+                "price": 5.0,
+                "currency": "USD"
+            }
+        },
+        "driver_2_ID": {
+            "minimumCustomerRating": 6,
+            "minimumTripPrice": {
+                "price": 5.5,
+                "currency": "USD"
+            }
+        },
+        "driver_3_ID": {
+            "minimumCustomerRating": 7,
+            "minimumTripPrice": {
+            "price": 4.5,
+            "currency": "USD"
+            }
+        },
+        "driver_4_ID": {
+            "minimumCustomerRating": 4,
+            "minimumTripPrice": {
+                "price": 3.5,
+                "currency": "USD"
+            }
+        }
+    }
+}

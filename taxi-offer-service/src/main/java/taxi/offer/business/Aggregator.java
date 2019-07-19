@@ -5,7 +5,10 @@ import customer.rating.model.CustomerRating;
 import driver.preference.DriverPreferenceRequest;
 import driver.preference.DriverPreferencesResponse;
 import drivers.discovery.model.Driver;
+import drivers.discovery.model.DriversDiscoveryRequest;
 import taxi.offer.Location;
+import taxi.offer.TaxiOfferRequest;
+import taxi.offer.TaxiOfferResponse;
 import taxi.offer.TripOffer;
 import taxi.offer.gateways.CustomerRatingServiceGateway;
 import taxi.offer.gateways.DriverPreferenceServiceGateway;
@@ -36,9 +39,14 @@ public class Aggregator {
         this.tripPricingServiceGateway = tripPricingServiceGateway;
     }
 
-    public List<TripOffer> retrieveOffers(final Location startingPoint, final Location destination, final String customerId) {
+    public TaxiOfferResponse retrieveOffers(final TaxiOfferRequest request) {
+        String customerId = request.customerId;
+        Location startingPoint = request.trip.start;
+        Location destination = request.trip.end;
+
         final drivers.discovery.model.Location location = new drivers.discovery.model.Location(startingPoint.longitude, startingPoint.latitude);
-        final List<Driver> driversNearby = driversDiscoveryServiceGateway.findDriversNearby(location).drivers;
+        final DriversDiscoveryRequest driversDiscoveryRequest = new DriversDiscoveryRequest(location);
+        final List<Driver> driversNearby = driversDiscoveryServiceGateway.findDriversNearby(driversDiscoveryRequest).drivers;
 
         final CustomerRating customerRating = customerRatingServiceGateway.findRating(new CustomerId(customerId));
 
@@ -58,10 +66,12 @@ public class Aggregator {
             return customerRatingThresholdSatisfied && sameCurrency && minimumPriceThresholdSatisfied;
         }).map(Map.Entry::getKey).collect(Collectors.toSet());
 
-        return driversNearby.stream()
+        List<TripOffer> offers = driversNearby.stream()
                 .filter(driver -> filteredDriverIds.contains(driver.ID))
-                .map(driver -> new TripOffer(new taxi.offer.TripPrice(tripPrice.price, tripPrice.currency),driver.ID))
+                .map(driver -> new TripOffer(new taxi.offer.TripPrice(tripPrice.price, tripPrice.currency), driver.firstName + " " + driver.lastName))
                 .collect(Collectors.toList());
+
+        return new TaxiOfferResponse(offers);
     }
 
 }

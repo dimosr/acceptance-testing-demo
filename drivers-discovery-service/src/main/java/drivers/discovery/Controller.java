@@ -1,6 +1,7 @@
 package drivers.discovery;
 
 import drivers.discovery.model.Driver;
+import drivers.discovery.model.DriversDiscoveryRequest;
 import drivers.discovery.model.DriversDiscoveryResponse;
 import drivers.discovery.model.Location;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +20,8 @@ public class Controller {
 
     @ResponseBody
     @PostMapping(value = "/drivers", consumes = "application/json", produces = "application/json")
-    public DriversDiscoveryResponse getDrivers(@RequestBody Location location) {
-        List<Driver> drivers = driversLocator.locateDrivers(location);
+    public DriversDiscoveryResponse getDrivers(@RequestBody DriversDiscoveryRequest request) {
+        List<Driver> drivers = driversLocator.locateDrivers(request.currentLocation);
         DriversDiscoveryResponse response = new DriversDiscoveryResponse(drivers);
 
         return response;

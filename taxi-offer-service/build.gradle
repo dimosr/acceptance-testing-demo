@@ -17,6 +17,9 @@ dependencies {
     compile project(":driver-preference-service-model")
     compile project(":drivers-discovery-service-model")
 
+    testCompile "org.mockito:mockito-core:2.1.0"
+    testCompile("org.assertj:assertj-core:3.11.1")
+
     components {
         withModule('org.springframework:spring-beans') {
             allVariants {

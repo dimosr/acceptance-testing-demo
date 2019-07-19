@@ -9,6 +9,6 @@ import lombok.Value;
 @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
 @AllArgsConstructor
 public class Location {
-    long latitude;
-    long longitude;
+    double latitude;
+    double longitude;
 }

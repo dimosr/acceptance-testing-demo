@@ -1,0 +1,13 @@
+{
+  "trip": {
+    "start": {
+      "longitude": 51.5,
+      "latitude": 0.12
+    },
+    "end": {
+      "longitude": 52.5,
+      "latitude": 0.10
+    }
+  },
+  "customerId": "some_customer_id"
+}

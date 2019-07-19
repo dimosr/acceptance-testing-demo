@@ -1,7 +1,7 @@
 package taxi.offer.gateways;
 
+import drivers.discovery.model.DriversDiscoveryRequest;
 import drivers.discovery.model.DriversDiscoveryResponse;
-import drivers.discovery.model.Location;
 import org.springframework.http.HttpEntity;
 import org.springframework.web.client.RestTemplate;
 
@@ -17,9 +17,9 @@ public class DriversDiscoveryServiceGateway {
                 .replace("<port>", Integer.toString(port));
     }
 
-    public DriversDiscoveryResponse findDriversNearby(final Location location) {
+    public DriversDiscoveryResponse findDriversNearby(DriversDiscoveryRequest driversDiscoveryRequest) {
         RestTemplate restTemplate = new RestTemplate();
-        HttpEntity<Location> request = new HttpEntity<>(location);
+        HttpEntity<DriversDiscoveryRequest> request = new HttpEntity<>(driversDiscoveryRequest);
         return restTemplate.postForObject(url, request, DriversDiscoveryResponse.class);
     }
 

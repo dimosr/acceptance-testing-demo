@@ -1,0 +1,18 @@
+{
+    "offers": [
+        {
+            "tripPrice": {
+                "price": 6.5,
+                "currency": "USD"
+            },
+            "driverFullName": "Diego Armando Maradona"
+        },
+        {
+            "tripPrice": {
+                "price": 6.5,
+                "currency": "USD"
+            },
+            "driverFullName": "Johan Cruyff"
+        }
+    ]
+}
