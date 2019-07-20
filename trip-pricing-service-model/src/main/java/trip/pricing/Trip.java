@@ -9,6 +9,6 @@ import lombok.Value;
 @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
 @AllArgsConstructor
 public class Trip {
-    Location start;
-    Location end;
+    private Location start;
+    private Location end;
 }

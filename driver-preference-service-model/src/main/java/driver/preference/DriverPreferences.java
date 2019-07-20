@@ -1,13 +1,14 @@
 package driver.preference;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Value;
 
 @Value
-@NoArgsConstructor(force = true)
+@NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
 @AllArgsConstructor
 public class DriverPreferences {
-    public int minimumCustomerRating;
-    public TripPrice minimumTripPrice;
+    private int minimumCustomerRating;
+    private TripPrice minimumTripPrice;
 }

@@ -1,5 +1,6 @@
 package trip.pricing;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Value;
@@ -7,9 +8,9 @@ import lombok.Value;
 import java.math.BigDecimal;
 
 @Value
-@NoArgsConstructor(force = true)
+@NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
 @AllArgsConstructor
 public class TripPrice {
-    public BigDecimal price;
-    public String currency;
+    private BigDecimal price;
+    private String currency;
 }

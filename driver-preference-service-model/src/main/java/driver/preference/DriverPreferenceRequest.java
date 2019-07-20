@@ -1,5 +1,6 @@
 package driver.preference;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Value;
@@ -7,8 +8,8 @@ import lombok.Value;
 import java.util.List;
 
 @Value
-@NoArgsConstructor(force = true)
+@NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
 @AllArgsConstructor
 public class DriverPreferenceRequest {
-    public List<String> driverIds;
+    private List<String> driverIds;
 }

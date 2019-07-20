@@ -11,5 +11,5 @@ import java.util.List;
 @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
 @AllArgsConstructor
 public class TaxiOfferResponse {
-    List<TripOffer> offers;
+    private List<TripOffer> offers;
 }

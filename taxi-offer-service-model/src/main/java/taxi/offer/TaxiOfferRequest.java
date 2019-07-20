@@ -1,13 +1,14 @@
 package taxi.offer;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Value;
 
 @Value
-@NoArgsConstructor(force = true)
+@NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
 @AllArgsConstructor
 public class TaxiOfferRequest {
-    public Trip trip;
-    public String customerId;
+    private Trip trip;
+    private String customerId;
 }

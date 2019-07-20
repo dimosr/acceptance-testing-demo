@@ -1,13 +1,14 @@
 package drivers.discovery.model;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Value;
 
 @Value
-@NoArgsConstructor(force = true)
+@NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
 @AllArgsConstructor
 public class Location {
-    public double longitude;
-    public double latitude;
+    private double longitude;
+    private double latitude;
 }

@@ -40,35 +40,35 @@ public class Aggregator {
     }
 
     public TaxiOfferResponse retrieveOffers(final TaxiOfferRequest request) {
-        String customerId = request.customerId;
-        Location startingPoint = request.trip.start;
-        Location destination = request.trip.end;
+        String customerId = request.getCustomerId();
+        Location startingPoint = request.getTrip().getStart();
+        Location destination = request.getTrip().getEnd();
 
-        final drivers.discovery.model.Location location = new drivers.discovery.model.Location(startingPoint.longitude, startingPoint.latitude);
+        final drivers.discovery.model.Location location = new drivers.discovery.model.Location(startingPoint.getLongitude(), startingPoint.getLatitude());
         final DriversDiscoveryRequest driversDiscoveryRequest = new DriversDiscoveryRequest(location);
-        final List<Driver> driversNearby = driversDiscoveryServiceGateway.findDriversNearby(driversDiscoveryRequest).drivers;
+        final List<Driver> driversNearby = driversDiscoveryServiceGateway.findDriversNearby(driversDiscoveryRequest).getDrivers();
 
         final CustomerRating customerRating = customerRatingServiceGateway.findRating(new CustomerId(customerId));
 
-        final trip.pricing.Location startLocation = new trip.pricing.Location(startingPoint.latitude, startingPoint.longitude);
-        final trip.pricing.Location endLocation = new trip.pricing.Location(destination.latitude, destination.longitude);
+        final trip.pricing.Location startLocation = new trip.pricing.Location(startingPoint.getLatitude(), startingPoint.getLongitude());
+        final trip.pricing.Location endLocation = new trip.pricing.Location(destination.getLatitude(), destination.getLongitude());
         final TripPrice tripPrice = tripPricingServiceGateway.getPriceForTrip(new Trip(startLocation, endLocation));
 
-        final List<String> nearbyDriverIds = driversNearby.stream().map(driver -> driver.ID).collect(Collectors.toList());
+        final List<String> nearbyDriverIds = driversNearby.stream().map(driver -> driver.getId()).collect(Collectors.toList());
         final DriverPreferenceRequest driverPreferenceRequest = new DriverPreferenceRequest(nearbyDriverIds);
         final DriverPreferencesResponse driverPreferencesResponse = driverPreferenceServiceGateway.findPreferences(driverPreferenceRequest);
 
-        final Set<String> filteredDriverIds = driverPreferencesResponse.driverPreferences.entrySet().stream().filter(entry -> {
-            boolean customerRatingThresholdSatisfied = entry.getValue().minimumCustomerRating < customerRating.rating;
-            boolean sameCurrency = entry.getValue().minimumTripPrice.currency.equals(tripPrice.currency);
-            boolean minimumPriceThresholdSatisfied = entry.getValue().minimumTripPrice.price.compareTo(tripPrice.price) < 0;
+        final Set<String> filteredDriverIds = driverPreferencesResponse.getDriverPreferences().entrySet().stream().filter(entry -> {
+            boolean customerRatingThresholdSatisfied = entry.getValue().getMinimumCustomerRating() < customerRating.getRating();
+            boolean sameCurrency = entry.getValue().getMinimumTripPrice().getCurrency().equals(tripPrice.getCurrency());
+            boolean minimumPriceThresholdSatisfied = entry.getValue().getMinimumTripPrice().getPrice().compareTo(tripPrice.getPrice()) < 0;
 
             return customerRatingThresholdSatisfied && sameCurrency && minimumPriceThresholdSatisfied;
         }).map(Map.Entry::getKey).collect(Collectors.toSet());
 
         List<TripOffer> offers = driversNearby.stream()
-                .filter(driver -> filteredDriverIds.contains(driver.ID))
-                .map(driver -> new TripOffer(new taxi.offer.TripPrice(tripPrice.price, tripPrice.currency), driver.firstName + " " + driver.lastName))
+                .filter(driver -> filteredDriverIds.contains(driver.getId()))
+                .map(driver -> new TripOffer(new taxi.offer.TripPrice(tripPrice.getPrice(), tripPrice.getCurrency()), driver.getFirstName() + " " + driver.getLastName()))
                 .collect(Collectors.toList());
 
         return new TaxiOfferResponse(offers);

@@ -11,6 +11,6 @@ import java.math.BigDecimal;
 @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
 @AllArgsConstructor
 public class TripPrice {
-    BigDecimal price;
-    String currency;
+    private BigDecimal price;
+    private String currency;
 }

@@ -9,6 +9,6 @@ import lombok.Value;
 @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
 @AllArgsConstructor
 public class TripOffer {
-    TripPrice tripPrice;
-    String driverFullName;
+    private TripPrice tripPrice;
+    private String driverFullName;
 }

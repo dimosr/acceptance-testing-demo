@@ -9,5 +9,5 @@ import lombok.Value;
 @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
 @AllArgsConstructor
 public class CustomerId {
-    String id;
+    private String id;
 }
