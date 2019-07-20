@@ -1,4 +1,4 @@
-package taxi.offer;
+package taxi.offer.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import customer.rating.model.CustomerId;
@@ -8,13 +8,15 @@ import driver.preference.DriverPreferencesResponse;
 import drivers.discovery.model.DriversDiscoveryRequest;
 import drivers.discovery.model.DriversDiscoveryResponse;
 import org.junit.Before;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
+import taxi.offer.TaxiOfferRequest;
+import taxi.offer.TaxiOfferResponse;
 import taxi.offer.business.Aggregator;
 import taxi.offer.config.AcceptanceTestConfig;
 import taxi.offer.gateways.CustomerRatingServiceGateway;
@@ -33,11 +35,17 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-
+/**
+ * This test creates all the necessary infrastructure for an acceptance test:
+ * - performs all the necessary dependency injection via the imported {@link Configuration}s
+ * - reads the associated files and sets up appropriately the stubbed responses of dependencies
+ * - provides a hook that's used by actual tests to provide the directory that contains the input/output that will be
+ *   used to exercise the service.
+ */
 @RunWith(SpringRunner.class)
 @Import(AcceptanceTestConfig.class)
 @ActiveProfiles("acceptance-testing")
-public class AcceptanceTest {
+abstract public class BaseAcceptanceTest {
 
     @Autowired
     private Aggregator aggregator;
@@ -55,7 +63,7 @@ public class AcceptanceTest {
     public void setup() throws IOException {
         getInputOutputPairs("dependencies", "customer-rating-service", CustomerId.class, CustomerRating.class).forEach((request, response) ->
                 Mockito.when(customerRatingServiceGateway.findRating(request))
-                    .thenReturn(response)
+                        .thenReturn(response)
         );
         getInputOutputPairs("dependencies", "driver-preference-service", DriverPreferenceRequest.class, DriverPreferencesResponse.class).forEach((request, response) ->
                 Mockito.when(driverPreferenceServiceGateway.findPreferences(request))
@@ -96,11 +104,13 @@ public class AcceptanceTest {
         return pairs;
     }
 
-    @Test
-    public void test() throws IOException {
-        getInputOutputPairs("requests", "taxi-offer-service", TaxiOfferRequest.class, TaxiOfferResponse.class).forEach((request, expectedResponse) -> {
-                TaxiOfferResponse response = aggregator.retrieveOffers(request);
-                assertThat(response).isEqualTo(expectedResponse);
+    public void executeTestFromFolder(final String testFolderName) throws IOException {
+        Map<TaxiOfferRequest, TaxiOfferResponse> ioPair = getInputOutputPairs("requests", testFolderName, TaxiOfferRequest.class, TaxiOfferResponse.class);
+
+        assertThat(ioPair.entrySet()).hasSize(1);
+        ioPair.forEach((request, expectedResponse) -> {
+            TaxiOfferResponse response = aggregator.retrieveOffers(request);
+            assertThat(response).isEqualTo(expectedResponse);
         });
     }
 
