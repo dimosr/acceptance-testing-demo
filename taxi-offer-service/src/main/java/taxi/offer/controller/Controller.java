@@ -7,18 +7,18 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import taxi.offer.TaxiOfferRequest;
 import taxi.offer.TaxiOfferResponse;
-import taxi.offer.business.Aggregator;
+import taxi.offer.business.OfferService;
 
 @RestController("/")
 public class Controller {
 
     @Autowired
-    private Aggregator aggregator;
+    private OfferService offerService;
 
     @ResponseBody
     @PostMapping(value = "/taxi-offers", consumes = "application/json", produces = "application/json")
     public TaxiOfferResponse getTaxiOffers(@RequestBody TaxiOfferRequest request) {
-        return aggregator.retrieveOffers(request);
+        return offerService.retrieveOffers(request);
     }
 
 }

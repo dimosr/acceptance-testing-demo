@@ -17,7 +17,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import taxi.offer.TaxiOfferRequest;
 import taxi.offer.TaxiOfferResponse;
-import taxi.offer.business.Aggregator;
+import taxi.offer.business.OfferService;
 import taxi.offer.config.AcceptanceTestConfig;
 import taxi.offer.gateways.CustomerRatingServiceGateway;
 import taxi.offer.gateways.DriverPreferenceServiceGateway;
@@ -48,7 +48,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 abstract public class BaseAcceptanceTest {
 
     @Autowired
-    private Aggregator aggregator;
+    private OfferService offerService;
 
     @Autowired
     private CustomerRatingServiceGateway customerRatingServiceGateway;
@@ -109,7 +109,7 @@ abstract public class BaseAcceptanceTest {
 
         assertThat(ioPair.entrySet()).hasSize(1);
         ioPair.forEach((request, expectedResponse) -> {
-            TaxiOfferResponse response = aggregator.retrieveOffers(request);
+            TaxiOfferResponse response = offerService.retrieveOffers(request);
             assertThat(response).isEqualTo(expectedResponse);
         });
     }
