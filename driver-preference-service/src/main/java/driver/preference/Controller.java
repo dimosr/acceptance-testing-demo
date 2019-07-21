@@ -27,7 +27,7 @@ public class Controller {
     private DriverPreferencesResponse retrievePreferences(final DriverPreferenceRequest request) {
         Map<String, DriverPreferences> driverPreferencesMap = new HashMap<>();
 
-        request.driverIds.forEach(driverId -> {
+        request.getDriverIds().forEach(driverId -> {
             int minCustomerRating = randomGenerator.nextInt(10) + 1;
             int randomValue = randomGenerator.nextInt(500) + 500;
             BigDecimal minTripPrice = BigDecimal.valueOf(randomValue).movePointLeft(2);

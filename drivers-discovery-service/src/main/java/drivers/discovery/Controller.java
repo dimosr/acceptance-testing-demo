@@ -21,7 +21,7 @@ public class Controller {
     @ResponseBody
     @PostMapping(value = "/drivers", consumes = "application/json", produces = "application/json")
     public DriversDiscoveryResponse getDrivers(@RequestBody DriversDiscoveryRequest request) {
-        List<Driver> drivers = driversLocator.locateDrivers(request.currentLocation);
+        List<Driver> drivers = driversLocator.locateDrivers(request.getCurrentLocation());
         DriversDiscoveryResponse response = new DriversDiscoveryResponse(drivers);
 
         return response;
